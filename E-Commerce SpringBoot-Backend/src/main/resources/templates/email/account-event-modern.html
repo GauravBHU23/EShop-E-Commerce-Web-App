@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Account Notification</title>
+  <style>
+    body { margin:0; padding:0; background:#f3f6fb; font-family:Arial,sans-serif; color:#1e293b; }
+    .wrapper { width:100%; padding:28px 12px; background:linear-gradient(180deg,#eef4ff 0%,#f8fafc 100%); }
+    .card { max-width:620px; margin:0 auto; background:#ffffff; border:1px solid #dbe7ff; border-radius:20px; overflow:hidden; box-shadow:0 18px 50px rgba(37,99,235,0.08); }
+    .hero { padding:32px 32px 24px; background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 55%,#0f172a 100%); color:#ffffff; }
+    .brand { display:inline-block; padding:8px 14px; border-radius:999px; background:rgba(255,255,255,0.16); font-size:13px; font-weight:700; letter-spacing:0.04em; }
+    .hero h1 { margin:18px 0 10px; font-size:32px; line-height:1.2; }
+    .hero p { margin:0; font-size:15px; line-height:1.7; color:rgba(255,255,255,0.92); }
+    .content { padding:30px 32px 20px; }
+    .content p { margin:0 0 16px; font-size:15px; line-height:1.7; color:#475569; }
+    .event-box { margin:22px 0; padding:20px; border-radius:16px; background:linear-gradient(180deg,#f8fbff 0%,#eff6ff 100%); border:1px solid #dbeafe; }
+    .event-title { margin:0 0 10px; font-size:20px; font-weight:700; color:#1e3a8a; }
+    .button { display:inline-block; background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%); color:#ffffff !important; text-decoration:none; font-weight:700; font-size:15px; padding:14px 28px; border-radius:12px; box-shadow:0 12px 24px rgba(37,99,235,0.22); }
+    .footer { padding:18px 32px 28px; color:#64748b; font-size:12px; line-height:1.7; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="card">
+      <div class="hero">
+        <span class="brand">EShop Account</span>
+        <h1>Important account update</h1>
+        <p>We are notifying you about an important action or change related to your EShop account.</p>
+      </div>
+      <div class="content">
+        <p>Hi <strong th:text="${name}">User</strong>,</p>
+        <div class="event-box">
+          <div class="event-title" th:text="${headline}">Account updated</div>
+          <p th:text="${description}">An important change happened on your account.</p>
+        </div>
+        <p>You can review your account details anytime from your profile section.</p>
+        <p><a th:href="${accountLink}" class="button">Open My Account</a></p>
+      </div>
+      <div class="footer">
+        <div>© 2026 EShop. This is an automated security and account-related email.</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

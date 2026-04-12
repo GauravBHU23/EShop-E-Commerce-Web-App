@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f6fb; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: 30px auto; background: #ffffff;
+                 border-radius: 10px; overflow: hidden; box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08); }
+    .header { background: #2563eb; padding: 28px; text-align: center; }
+    .header h1 { color: #ffffff; margin: 0; font-size: 24px; }
+    .body { padding: 30px; color: #334155; line-height: 1.6; }
+    .event-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 18px; margin: 18px 0; }
+    .btn { display: inline-block; background: #2563eb; color: #ffffff;
+           padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 16px; }
+    .footer { background: #f8fafc; padding: 18px; text-align: center; color: #64748b; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Account Notification</h1>
+    </div>
+    <div class="body">
+      <p>Hi <strong th:text="${name}">User</strong>,</p>
+      <div class="event-box">
+        <p style="margin: 0 0 10px; font-size: 18px; font-weight: 700; color: #1e3a8a;" th:text="${headline}">Account updated</p>
+        <p style="margin: 0;" th:text="${description}">An important change happened on your account.</p>
+      </div>
+      <p>You can review your account details anytime from your profile section.</p>
+      <a th:href="${accountLink}" class="btn">Open My Account</a>
+    </div>
+    <div class="footer">
+      <p>© 2026 EShop. This is an automatic security and account-related email.</p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: 30px auto; background: #fff;
+                 border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .header { background: #2ecc71; padding: 30px; text-align: center; }
+    .header h1 { color: #fff; margin: 0; }
+    .body { padding: 30px; }
+    .order-box { background: #f9f9f9; border: 1px solid #eee; border-radius: 6px; padding: 16px; margin: 16px 0; }
+    .order-box h3 { margin: 0 0 12px; color: #333; font-size: 16px; }
+    table { width: 100%; border-collapse: collapse; }
+    th { background: #1a73e8; color: #fff; padding: 10px; text-align: left; font-size: 13px; }
+    td { padding: 10px; border-bottom: 1px solid #eee; font-size: 13px; color: #555; }
+    .total-row td { font-weight: bold; color: #333; background: #f0f0f0; }
+    .footer { background: #f9f9f9; padding: 20px; text-align: center; color: #999; font-size: 12px; }
+    .badge { display: inline-block; background: #2ecc71; color: #fff;
+             padding: 4px 12px; border-radius: 20px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Order Confirmed!</h1>
+    </div>
+    <div class="body">
+      <p>Hi <strong th:text="${name}">User</strong>,</p>
+      <p>Great news! Your order has been placed successfully.</p>
+
+      <div class="order-box">
+        <h3>Order Details</h3>
+        <p>Order Number: <strong th:text="${orderNumber}">ORD-12345</strong> &nbsp;
+           <span class="badge">PLACED</span></p>
+        <p>Shipping to: <em th:text="${shippingAddress}">123 Main St, Mumbai</em></p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="item : ${items}">
+            <td th:text="${item.productName}">Product Name</td>
+            <td th:text="${item.quantity}">1</td>
+            <td th:text="'₹' + ${item.totalPrice}">₹999</td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="2">Total Amount</td>
+            <td th:text="'₹' + ${totalAmount}">₹999</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="margin-top:20px; color:#555;">
+        You will receive shipping updates via email. Thank you for shopping with EShop!
+      </p>
+    </div>
+    <div class="footer">
+      <p>© 2025 EShop. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>

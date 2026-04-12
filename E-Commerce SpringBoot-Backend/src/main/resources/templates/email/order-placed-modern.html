@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Order Confirmed</title>
+  <style>
+    body { margin:0; padding:0; background:#f3f6fb; font-family:Arial,sans-serif; color:#1e293b; }
+    .wrapper { width:100%; padding:28px 12px; background:linear-gradient(180deg,#ecfdf3 0%,#f8fafc 100%); }
+    .card { max-width:640px; margin:0 auto; background:#ffffff; border:1px solid #d7f3e1; border-radius:20px; overflow:hidden; box-shadow:0 18px 50px rgba(15,118,110,0.08); }
+    .hero { padding:32px 32px 24px; background:linear-gradient(135deg,#0f766e 0%,#16a34a 55%,#064e3b 100%); color:#ffffff; }
+    .brand { display:inline-block; padding:8px 14px; border-radius:999px; background:rgba(255,255,255,0.16); font-size:13px; font-weight:700; letter-spacing:0.04em; }
+    .hero h1 { margin:18px 0 10px; font-size:32px; line-height:1.2; }
+    .hero p { margin:0; font-size:15px; line-height:1.7; color:rgba(255,255,255,0.92); }
+    .content { padding:30px 32px 20px; }
+    .content p { margin:0 0 16px; font-size:15px; line-height:1.7; color:#475569; }
+    .summary { margin:22px 0; padding:20px; border-radius:16px; background:#f8fafc; border:1px solid #e2e8f0; }
+    .summary-row { margin:0 0 10px; font-size:14px; color:#334155; }
+    .summary-row:last-child { margin-bottom:0; }
+    table { width:100%; border-collapse:collapse; margin-top:18px; overflow:hidden; border-radius:12px; }
+    th { background:#0f172a; color:#ffffff; padding:12px; text-align:left; font-size:13px; }
+    td { padding:12px; border-bottom:1px solid #e2e8f0; font-size:13px; color:#475569; vertical-align:top; }
+    .total-row td { font-weight:700; color:#0f172a; background:#eff6ff; }
+    .footer { padding:18px 32px 28px; color:#64748b; font-size:12px; line-height:1.7; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="card">
+      <div class="hero">
+        <span class="brand">EShop Orders</span>
+        <h1>Your order is confirmed</h1>
+        <p>We have received your order and started processing it. You will continue getting updates by email.</p>
+      </div>
+      <div class="content">
+        <p>Hi <strong th:text="${name}">User</strong>,</p>
+        <p>Thanks for shopping with EShop. Here is a quick summary of your order.</p>
+        <div class="summary">
+          <div class="summary-row"><strong>Order number:</strong> <span th:text="${orderNumber}">ORD-12345</span></div>
+          <div class="summary-row"><strong>Status:</strong> Placed</div>
+          <div class="summary-row"><strong>Shipping address:</strong> <span th:text="${shippingAddress}">123 Main St, Mumbai</span></div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Qty</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="item : ${items}">
+              <td th:text="${item.productName}">Product Name</td>
+              <td th:text="${item.quantity}">1</td>
+              <td th:text="'Rs ' + ${item.totalPrice}">Rs 999</td>
+            </tr>
+            <tr class="total-row">
+              <td colspan="2">Total Amount</td>
+              <td th:text="'Rs ' + ${totalAmount}">Rs 999</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="footer">
+        <div>© 2026 EShop. Order and delivery updates will continue on this email address.</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

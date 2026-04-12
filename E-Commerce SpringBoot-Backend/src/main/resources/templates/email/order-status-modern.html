@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Order Update</title>
+  <style>
+    body { margin:0; padding:0; background:#f3f6fb; font-family:Arial,sans-serif; color:#1e293b; }
+    .wrapper { width:100%; padding:28px 12px; background:linear-gradient(180deg,#fff7ed 0%,#f8fafc 100%); }
+    .card { max-width:620px; margin:0 auto; background:#ffffff; border:1px solid #fed7aa; border-radius:20px; overflow:hidden; box-shadow:0 18px 50px rgba(234,88,12,0.08); }
+    .hero { padding:32px 32px 24px; background:linear-gradient(135deg,#f97316 0%,#ea580c 55%,#7c2d12 100%); color:#ffffff; }
+    .brand { display:inline-block; padding:8px 14px; border-radius:999px; background:rgba(255,255,255,0.16); font-size:13px; font-weight:700; letter-spacing:0.04em; }
+    .hero h1 { margin:18px 0 10px; font-size:32px; line-height:1.2; }
+    .hero p { margin:0; font-size:15px; line-height:1.7; color:rgba(255,255,255,0.92); }
+    .content { padding:30px 32px 20px; }
+    .content p { margin:0 0 16px; font-size:15px; line-height:1.7; color:#475569; }
+    .status-box { margin:22px 0; padding:20px; border-radius:16px; background:#fff7ed; border:1px solid #fed7aa; }
+    .status-line { margin:0 0 10px; font-size:15px; color:#7c2d12; }
+    .status-line:last-child { margin-bottom:0; }
+    .footer { padding:18px 32px 28px; color:#64748b; font-size:12px; line-height:1.7; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="card">
+      <div class="hero">
+        <span class="brand">EShop Tracking</span>
+        <h1>Your order status changed</h1>
+        <p>We wanted to let you know that there is a new update on one of your recent orders.</p>
+      </div>
+      <div class="content">
+        <p>Hi <strong th:text="${name}">User</strong>,</p>
+        <p>Your order is moving forward and the latest status is shown below.</p>
+        <div class="status-box">
+          <div class="status-line"><strong>Order number:</strong> <span th:text="${orderNumber}">ORD-12345</span></div>
+          <div class="status-line"><strong>Current status:</strong> <span th:text="${status}">SHIPPED</span></div>
+        </div>
+        <p>Please sign in to your account if you want to review full order details.</p>
+      </div>
+      <div class="footer">
+        <div>© 2026 EShop. This is an automated order update email.</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

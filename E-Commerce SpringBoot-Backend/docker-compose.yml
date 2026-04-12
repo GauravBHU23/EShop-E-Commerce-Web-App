@@ -1,0 +1,87 @@
+version: '3.9'
+
+services:
+
+  # ===== MySQL Database =====
+  mysql:
+    image: mysql:8.0
+    container_name: ecommerce-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ecommerce_db
+      MYSQL_USER: ecommerce_user
+      MYSQL_PASSWORD: ecommerce_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ecommerce-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # ===== Spring Boot App =====
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecommerce-app
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DATABASE_URL: jdbc:mysql://mysql:3306/ecommerce_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      DATABASE_USERNAME: ecommerce_user
+      DATABASE_PASSWORD: ecommerce_pass
+      JWT_SECRET: your_super_secret_jwt_key_here_must_be_32_chars_min
+      MAIL_HOST: smtp.gmail.com
+      MAIL_PORT: 587
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      FILE_UPLOAD_DIR: /app/uploads/
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads_data:/app/uploads
+    networks:
+      - ecommerce-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # ===== phpMyAdmin (optional, for DB management) =====
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: ecommerce-phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8081:80"
+    networks:
+      - ecommerce-network
+    profiles:
+      - tools  # Only starts with: docker-compose --profile tools up
+
+volumes:
+  mysql_data:
+  uploads_data:
+
+networks:
+  ecommerce-network:
+    driver: bridge

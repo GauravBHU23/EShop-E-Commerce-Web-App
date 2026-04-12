@@ -1,0 +1,45 @@
+spring:
+  datasource:
+    url: jdbc:h2:file:./data/ecommerce_db;MODE=MySQL;AUTO_SERVER=TRUE;DATABASE_TO_LOWER=TRUE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+  devtools:
+    restart:
+      poll-interval: 2s
+      quiet-period: 1s
+
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: ${MAIL_SMTP_AUTH:true}
+          starttls:
+            enable: ${MAIL_SMTP_STARTTLS_ENABLE:true}
+
+logging:
+  level:
+    com.ecommerce: DEBUG
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:dev_only_change_me_to_a_long_random_secret_key_32_chars_minimum}
+    cookie-secure: false
+  backend:
+    url: ${BACKEND_URL:http://localhost:8080}

@@ -1,0 +1,79 @@
+spring:
+  application:
+    name: ecommerce-backend
+
+  config:
+    import: optional:file:.env[.properties]
+
+  profiles:
+    active: dev
+
+  # ===== JPA / HIBERNATE =====
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
+
+  # ===== FILE UPLOAD =====
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 50MB
+
+  # ===== CACHE =====
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=300s
+
+  # ===== THYMELEAF =====
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+
+# ===== SERVER =====
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+
+# ===== JWT CUSTOM CONFIG =====
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration: ${JWT_EXPIRATION:86400000}
+    refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
+    cookie-name: ${JWT_COOKIE_NAME:access_token}
+    cookie-secure: ${JWT_COOKIE_SECURE:false}
+
+  file:
+    upload-dir: uploads/
+
+  frontend:
+    url: http://localhost:3000
+
+  backend:
+    url: http://localhost:8080
+
+  payment:
+    instamojo:
+      base-url: ${INSTAMOJO_BASE_URL:https://www.instamojo.com/api/1.1}
+      api-key: ${INSTAMOJO_API_KEY:}
+      auth-token: ${INSTAMOJO_AUTH_TOKEN:}
+      salt: ${INSTAMOJO_SALT:}
+
+# ===== LOGGING =====
+logging:
+  level:
+    com.ecommerce: DEBUG
+    org.springframework.security: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
