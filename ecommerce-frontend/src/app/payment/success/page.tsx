@@ -1,11 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { paymentApi } from "@/lib/api";
 
 export default function PaymentSuccessPage() {
+  return (
+    <Suspense fallback={<PaymentStatusShell message="Loading payment status..." />}>
+      <PaymentSuccessContent />
+    </Suspense>
+  );
+}
+
+function PaymentSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const paymentRequestId = searchParams.get("payment_request_id");
@@ -52,31 +60,47 @@ export default function PaymentSuccessPage() {
   }, [paymentId, paymentRequestId, paymentStatus, router]);
 
   return (
+    <PaymentStatusShell
+      title={status === "loading" ? "Processing Payment" : status === "success" ? "Payment Successful" : "Payment Failed"}
+      message={message}
+    >
+      {status === "failed" && (
+        <div className="mt-6 flex flex-col gap-3">
+          {orderId && (
+            <Link
+              href={`/orders/${orderId}`}
+              className="inline-flex h-11 items-center justify-center rounded-lg bg-primary px-4 font-medium text-primary-foreground"
+            >
+              View Order
+            </Link>
+          )}
+          <Link
+            href="/checkout"
+            className="inline-flex h-11 items-center justify-center rounded-lg border px-4 font-medium"
+          >
+            Back to Checkout
+          </Link>
+        </div>
+      )}
+    </PaymentStatusShell>
+  );
+}
+
+function PaymentStatusShell({
+  title = "Processing Payment",
+  message,
+  children,
+}: {
+  title?: string;
+  message: string;
+  children?: React.ReactNode;
+}) {
+  return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-muted/20">
       <div className="w-full max-w-md rounded-2xl border bg-background p-8 text-center shadow-sm">
-        <h1 className="text-2xl font-bold">
-          {status === "loading" ? "Processing Payment" : status === "success" ? "Payment Successful" : "Payment Failed"}
-        </h1>
+        <h1 className="text-2xl font-bold">{title}</h1>
         <p className="mt-3 text-sm text-muted-foreground">{message}</p>
-
-        {status === "failed" && (
-          <div className="mt-6 flex flex-col gap-3">
-            {orderId && (
-              <Link
-                href={`/orders/${orderId}`}
-                className="inline-flex h-11 items-center justify-center rounded-lg bg-primary px-4 font-medium text-primary-foreground"
-              >
-                View Order
-              </Link>
-            )}
-            <Link
-              href="/checkout"
-              className="inline-flex h-11 items-center justify-center rounded-lg border px-4 font-medium"
-            >
-              Back to Checkout
-            </Link>
-          </div>
-        )}
+        {children}
       </div>
     </div>
   );

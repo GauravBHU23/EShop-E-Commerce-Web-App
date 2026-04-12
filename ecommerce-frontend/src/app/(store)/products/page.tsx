@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { Suspense, useMemo, useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ChevronRight, SlidersHorizontal, X } from "lucide-react";
 import { useSearchProducts, useCategories } from "@/hooks/useApi";
@@ -12,6 +12,14 @@ import { formatPrice } from "@/lib/utils";
 import type { CategoryResponse, ProductSearchParams } from "@/types";
 
 export default function ProductsPage() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <ProductsPageContent />
+    </Suspense>
+  );
+}
+
+function ProductsPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { data: categories } = useCategories();

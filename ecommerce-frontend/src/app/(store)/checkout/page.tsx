@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MapPin, CreditCard, Truck, CheckCircle2, Plus } from "lucide-react";
 import { useCart, useAddresses, useAddAddress, usePlaceOrder } from "@/hooks/useApi";
@@ -34,17 +34,23 @@ export default function CheckoutPage() {
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<AddressRequest>();
 
-  if (!isAuthenticated) {
-    router.push("/auth/login");
-    return null;
-  }
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.replace("/auth/login");
+    }
+  }, [isAuthenticated, router]);
+
+  useEffect(() => {
+    if (cart && cart.items.length === 0) {
+      router.replace("/cart");
+    }
+  }, [cart, router]);
+
+  if (!isAuthenticated) return <LoadingSpinner />;
 
   if (loadingAddresses || !cart) return <LoadingSpinner />;
 
-  if (cart.items.length === 0) {
-    router.push("/cart");
-    return null;
-  }
+  if (cart.items.length === 0) return <LoadingSpinner />;
 
   const defaultAddress = addresses?.find((a) => a.isDefault);
   const effectiveAddressId = selectedAddressId ?? defaultAddress?.id ?? addresses?.[0]?.id ?? null;

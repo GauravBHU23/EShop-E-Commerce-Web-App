@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Package, Eye, EyeOff } from "lucide-react";
@@ -8,6 +8,14 @@ import { authApi } from "@/lib/api";
 import { toast } from "sonner";
 
 export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<ResetPasswordFallback />}>
+      <ResetPasswordContent />
+    </Suspense>
+  );
+}
+
+function ResetPasswordContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token") || "";
@@ -96,6 +104,21 @@ export default function ResetPasswordPage() {
               </button>
             </form>
           )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ResetPasswordFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center px-4 bg-muted/20">
+      <div className="w-full max-w-md">
+        <div className="bg-background border rounded-2xl p-8 shadow-sm text-center">
+          <Link href="/" className="inline-flex items-center gap-2 font-bold text-xl text-primary">
+            <Package className="h-6 w-6" /> EShop
+          </Link>
+          <p className="mt-4 text-sm text-muted-foreground">Loading reset form...</p>
         </div>
       </div>
     </div>

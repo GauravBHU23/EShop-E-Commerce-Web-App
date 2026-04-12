@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { User, MapPin, Key, Plus, Trash2, BadgeCheck, MailCheck } from "lucide-react";
 import { useProfile, useAddresses, useAddAddress, useDeleteAddress } from "@/hooks/useApi";
@@ -37,8 +37,14 @@ export default function ProfilePage() {
   const [showAddrForm, setShowAddrForm] = useState(false);
   const [addrForm, setAddrForm] = useState({ fullName: "", phone: "", street: "", city: "", state: "", pincode: "", country: "India", isDefault: false, landmark: "" });
 
+  useEffect(() => {
+    if (hasHydrated && !isAuthenticated) {
+      router.replace("/auth/login");
+    }
+  }, [hasHydrated, isAuthenticated, router]);
+
   if (!hasHydrated) return <LoadingSpinner />;
-  if (!isAuthenticated) { router.push("/auth/login"); return null; }
+  if (!isAuthenticated) return <LoadingSpinner />;
   if (isLoading) return <LoadingSpinner />;
 
   const handleSaveProfile = async (e: React.FormEvent) => {
