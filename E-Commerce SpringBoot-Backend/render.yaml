@@ -3,6 +3,45 @@ services:
     name: ecommerce-springboot-backend
     runtime: java
     rootDir: E-Commerce SpringBoot-Backend
-    buildCommand: chmod +x mvnw && ./mvnw clean package -DskipTests
+    healthCheckPath: /actuator/health
+    buildCommand: chmod +x mvnw && ./mvnw clean package -Dmaven.test.skip=true
     startCommand: java -jar target/*.jar
     plan: free
+    autoDeployTrigger: commit
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: JWT_COOKIE_SECURE
+        value: "true"
+      - key: FILE_UPLOAD_DIR
+        value: /app/uploads/
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_USERNAME
+        sync: false
+      - key: DATABASE_PASSWORD
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: BACKEND_URL
+        sync: false
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
+      - key: MAIL_HOST
+        value: smtp.gmail.com
+      - key: MAIL_PORT
+        value: "587"
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: INSTAMOJO_BASE_URL
+        value: https://www.instamojo.com/api/1.1
+      - key: INSTAMOJO_API_KEY
+        sync: false
+      - key: INSTAMOJO_AUTH_TOKEN
+        sync: false
+      - key: INSTAMOJO_SALT
+        sync: false
