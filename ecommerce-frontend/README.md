@@ -101,7 +101,7 @@ From the sibling `E-Commerce SpringBoot-Backend` folder:
 mvn spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
-The `dev` profile uses the in-memory H2 database, so Docker and MySQL are not required for local development.
+The `dev` profile now uses PostgreSQL by default, so make sure a local PostgreSQL instance is available or start the backend stack with Docker Compose.
 
 ### 4. Run the frontend
 
