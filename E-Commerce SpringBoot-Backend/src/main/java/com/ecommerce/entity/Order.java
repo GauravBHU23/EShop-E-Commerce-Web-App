@@ -80,8 +80,9 @@ public class Order {
     @Column(name = "notes")
     private String notes;
 
-    @Column(name = "hidden_by_user")
-    private boolean hiddenByUser = false;
+    @Builder.Default
+    @Column(name = "hidden_by_user", nullable = false)
+    private Boolean hiddenByUser = Boolean.FALSE;
 
     @CreatedDate
     @Column(name = "placed_at", updatable = false)
@@ -93,5 +94,12 @@ public class Order {
     @PreUpdate
     public void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    @PrePersist
+    public void onCreate() {
+        if (this.hiddenByUser == null) {
+            this.hiddenByUser = Boolean.FALSE;
+        }
     }
 }

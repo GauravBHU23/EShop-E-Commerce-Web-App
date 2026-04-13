@@ -230,7 +230,7 @@ public class OrderService {
         User user = userService.findUserByEmail(email);
         Pageable pageable = PageRequest.of(page, size);
         Page<OrderResponse> result = orderRepository
-                .findByUserIdAndHiddenByUserFalseOrderByPlacedAtDesc(user.getId(), pageable)
+                .findVisibleOrdersByUserId(user.getId(), pageable)
                 .map(this::mapToResponse);
         return PagedResponse.from(result);
     }
@@ -238,7 +238,7 @@ public class OrderService {
     @Transactional(readOnly = true)
     public OrderResponse getOrderById(String email, Long orderId) {
         User user = userService.findUserByEmail(email);
-        Order order = orderRepository.findByIdAndUserIdAndHiddenByUserFalse(orderId, user.getId())
+        Order order = orderRepository.findVisibleOrderByIdAndUserId(orderId, user.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Order", "id", orderId));
         return mapToResponse(order);
     }
@@ -246,7 +246,7 @@ public class OrderService {
     @Transactional
     public OrderResponse cancelOrder(String email, Long orderId) {
         User user = userService.findUserByEmail(email);
-        Order order = orderRepository.findByIdAndUserIdAndHiddenByUserFalse(orderId, user.getId())
+        Order order = orderRepository.findVisibleOrderByIdAndUserId(orderId, user.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Order", "id", orderId));
 
         if (order.getStatus() == OrderStatus.SHIPPED ||
@@ -271,7 +271,7 @@ public class OrderService {
     @Transactional
     public void hideOrderFromUserHistory(String email, Long orderId) {
         User user = userService.findUserByEmail(email);
-        Order order = orderRepository.findByIdAndUserIdAndHiddenByUserFalse(orderId, user.getId())
+        Order order = orderRepository.findVisibleOrderByIdAndUserId(orderId, user.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Order", "id", orderId));
 
         if (order.getStatus() != OrderStatus.CANCELLED && order.getStatus() != OrderStatus.REFUNDED) {

@@ -28,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.RestClientResponseException;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -81,7 +82,7 @@ public class InstamojoPaymentService {
 
         MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
         requestBody.add("purpose", order.getOrderNumber());
-        requestBody.add("amount", order.getTotalAmount().setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString());
+        requestBody.add("amount", order.getTotalAmount().setScale(2, RoundingMode.HALF_UP).toPlainString());
         requestBody.add("buyer_name", order.getShippingName());
         requestBody.add("email", user.getEmail());
         requestBody.add("phone", order.getShippingPhone());
@@ -104,7 +105,7 @@ public class InstamojoPaymentService {
             );
         } catch (RestClientResponseException ex) {
             log.error("Instamojo create payment request failed: status={}, body={}",
-                    ex.getRawStatusCode(), ex.getResponseBodyAsString());
+                    ex.getStatusCode().value(), ex.getResponseBodyAsString());
             throw new BadRequestException("Instamojo rejected the payment request. Please check API credentials, account activation, and redirect URL.");
         } catch (ResourceAccessException ex) {
             log.error("Instamojo is not reachable", ex);
@@ -218,7 +219,7 @@ public class InstamojoPaymentService {
             );
         } catch (RestClientResponseException ex) {
             log.error("Instamojo verify payment failed: status={}, body={}",
-                    ex.getRawStatusCode(), ex.getResponseBodyAsString());
+                    ex.getStatusCode().value(), ex.getResponseBodyAsString());
             throw new BadRequestException("Instamojo could not verify this payment.");
         } catch (ResourceAccessException ex) {
             log.error("Instamojo verification endpoint is not reachable", ex);

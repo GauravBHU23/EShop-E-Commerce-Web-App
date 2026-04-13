@@ -17,11 +17,23 @@ import java.util.Optional;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    Page<Order> findByUserIdAndHiddenByUserFalseOrderByPlacedAtDesc(String userId, Pageable pageable);
+    @Query("""
+            SELECT o FROM Order o
+            WHERE o.user.id = :userId
+              AND COALESCE(o.hiddenByUser, false) = false
+            ORDER BY o.placedAt DESC
+            """)
+    Page<Order> findVisibleOrdersByUserId(@Param("userId") String userId, Pageable pageable);
 
     Optional<Order> findByOrderNumber(String orderNumber);
 
-    Optional<Order> findByIdAndUserIdAndHiddenByUserFalse(Long id, String userId);
+    @Query("""
+            SELECT o FROM Order o
+            WHERE o.id = :id
+              AND o.user.id = :userId
+              AND COALESCE(o.hiddenByUser, false) = false
+            """)
+    Optional<Order> findVisibleOrderByIdAndUserId(@Param("id") Long id, @Param("userId") String userId);
 
     List<Order> findByStatus(OrderStatus status);
 
