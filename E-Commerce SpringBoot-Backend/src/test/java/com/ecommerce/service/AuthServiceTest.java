@@ -9,6 +9,7 @@ import com.ecommerce.enums.RoleName;
 import com.ecommerce.exception.DuplicateResourceException;
 import com.ecommerce.repository.RoleRepository;
 import com.ecommerce.repository.UserRepository;
+import com.ecommerce.security.LoginAttemptService;
 import com.ecommerce.security.JwtTokenProvider;
 import com.ecommerce.security.LoginAttemptService;
 import org.junit.jupiter.api.BeforeEach;
@@ -100,7 +101,7 @@ class AuthServiceTest {
     @DisplayName("Login: success case")
     void login_Success() {
         LoginRequest loginRequest = new LoginRequest("test@example.com", "password123");
-        Authentication mockAuth = mock(Authentication.class);
+        Authentication mockAuth = org.mockito.Mockito.mock(Authentication.class);
 
         given(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .willReturn(mockAuth);
