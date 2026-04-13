@@ -96,7 +96,6 @@ public class EmailService {
         }
     }
 
-    @Async
     public void sendEmailVerificationOtp(User user, String otp) {
         try {
             Context context = new Context();
@@ -108,6 +107,7 @@ public class EmailService {
             sendEmail(user.getEmail(), "Verify your EShop email", html);
         } catch (Exception e) {
             log.error("Failed to send email verification OTP to {}", user.getEmail(), e);
+            throw new BadRequestException("Verification OTP could not be sent. Please verify mail credentials and try again.");
         }
     }
 
