@@ -2,11 +2,23 @@ package com.ecommerce.service;
 
 import com.ecommerce.dto.request.OrderRequest;
 import com.ecommerce.dto.response.OrderResponse;
-import com.ecommerce.entity.*;
-import com.ecommerce.enums.*;
-import com.ecommerce.exception.*;
-import com.ecommerce.repository.*;
-import org.junit.jupiter.api.*;
+import com.ecommerce.entity.Address;
+import com.ecommerce.entity.Cart;
+import com.ecommerce.entity.CartItem;
+import com.ecommerce.entity.Order;
+import com.ecommerce.entity.Product;
+import com.ecommerce.entity.User;
+import com.ecommerce.enums.OrderStatus;
+import com.ecommerce.enums.PaymentMode;
+import com.ecommerce.exception.BadRequestException;
+import com.ecommerce.exception.ResourceNotFoundException;
+import com.ecommerce.repository.AddressRepository;
+import com.ecommerce.repository.OrderRepository;
+import com.ecommerce.repository.PaymentRepository;
+import com.ecommerce.repository.ProductRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -112,7 +124,7 @@ class OrderServiceTest {
                 .build();
 
         given(userService.findUserByEmail(anyString())).willReturn(mockUser);
-        given(orderRepository.findByIdAndUserId(1L, "user-123"))
+        given(orderRepository.findByIdAndUserIdAndHiddenByUserFalse(1L, "user-123"))
                 .willReturn(Optional.of(deliveredOrder));
 
         assertThatThrownBy(() -> orderService.cancelOrder("test@example.com", 1L))

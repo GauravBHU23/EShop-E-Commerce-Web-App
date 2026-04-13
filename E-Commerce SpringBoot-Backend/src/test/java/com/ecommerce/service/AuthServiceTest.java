@@ -10,6 +10,7 @@ import com.ecommerce.exception.DuplicateResourceException;
 import com.ecommerce.repository.RoleRepository;
 import com.ecommerce.repository.UserRepository;
 import com.ecommerce.security.JwtTokenProvider;
+import com.ecommerce.security.LoginAttemptService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,7 @@ class AuthServiceTest {
     @Mock private AuthenticationManager authenticationManager;
     @Mock private JwtTokenProvider jwtTokenProvider;
     @Mock private EmailService emailService;
+    @Mock private LoginAttemptService loginAttemptService;
 
     @InjectMocks
     private AuthService authService;
@@ -65,7 +67,7 @@ class AuthServiceTest {
     @Test
     @DisplayName("Register: success case")
     void register_Success() {
-        given(userRepository.existsByEmail(anyString())).willReturn(false);
+        given(userRepository.existsByEmailIgnoreCase(anyString())).willReturn(false);
         given(roleRepository.findByName(RoleName.ROLE_USER)).willReturn(Optional.of(userRole));
         given(passwordEncoder.encode(anyString())).willReturn("encodedPassword");
         given(userRepository.save(any(User.class))).willReturn(mockUser);
@@ -85,7 +87,7 @@ class AuthServiceTest {
     @Test
     @DisplayName("Register: duplicate email throws exception")
     void register_DuplicateEmail_ThrowsException() {
-        given(userRepository.existsByEmail("test@example.com")).willReturn(true);
+        given(userRepository.existsByEmailIgnoreCase("test@example.com")).willReturn(true);
 
         assertThatThrownBy(() -> authService.register(registerRequest))
                 .isInstanceOf(DuplicateResourceException.class)
@@ -102,7 +104,7 @@ class AuthServiceTest {
 
         given(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .willReturn(mockAuth);
-        given(userRepository.findByEmail("test@example.com")).willReturn(Optional.of(mockUser));
+        given(userRepository.findByEmailIgnoreCase("test@example.com")).willReturn(Optional.of(mockUser));
         given(jwtTokenProvider.generateToken(mockAuth)).willReturn("mock-jwt-token");
         given(jwtTokenProvider.generateRefreshToken(anyString())).willReturn("mock-refresh-token");
 

@@ -11,7 +11,7 @@ A production-grade e-commerce backend built with Spring Boot 3.2, covering every
 | Framework | Spring Boot 3.2 |
 | Language | Java 17 |
 | Security | Spring Security + JWT |
-| Database | MySQL 8 |
+| Database | PostgreSQL 16 |
 | ORM | JPA / Hibernate |
 | Cache | Caffeine |
 | Email | Spring Mail + Thymeleaf |
@@ -51,13 +51,13 @@ src/main/java/com/ecommerce/
 git clone https://github.com/yourname/ecommerce-backend.git
 cd ecommerce-backend
 cp .env.example .env
-# Edit .env with your DB credentials and mail settings
+# Edit .env with your PostgreSQL credentials and mail settings
 ```
 
 ### 2. Create Database
 
 ```sql
-CREATE DATABASE ecommerce_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE ecommerce_db;
 ```
 
 ### 3. Run Locally
@@ -70,6 +70,12 @@ mvn spring-boot:run -Dspring-boot.run.profiles=dev
 
 ```bash
 docker-compose up --build
+```
+
+Optional database UI:
+
+```bash
+docker-compose --profile tools up -d pgadmin
 ```
 
 App starts at: `http://localhost:8080`
