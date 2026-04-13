@@ -1,24 +1,15 @@
 spring:
   datasource:
-<<<<<<< Updated upstream
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/ecommerce_db}
     username: ${DATABASE_USERNAME:ecommerce_user}
     password: ${DATABASE_PASSWORD:ecommerce_pass}
-=======
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/ecommerce}
-    username: ${DATABASE_USERNAME:postgres}
-    password: ${DATABASE_PASSWORD:admin}
->>>>>>> Stashed changes
     driver-class-name: org.postgresql.Driver
 
   jpa:
     show-sql: true
-<<<<<<< Updated upstream
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-=======
->>>>>>> Stashed changes
 
   devtools:
     restart:

@@ -124,11 +124,7 @@ class OrderServiceTest {
                 .build();
 
         given(userService.findUserByEmail(anyString())).willReturn(mockUser);
-<<<<<<< Updated upstream
-        given(orderRepository.findByIdAndUserIdAndHiddenByUserFalse(1L, "user-123"))
-=======
         given(orderRepository.findVisibleOrderByIdAndUserId(1L, "user-123"))
->>>>>>> Stashed changes
                 .willReturn(Optional.of(deliveredOrder));
 
         assertThatThrownBy(() -> orderService.cancelOrder("test@example.com", 1L))

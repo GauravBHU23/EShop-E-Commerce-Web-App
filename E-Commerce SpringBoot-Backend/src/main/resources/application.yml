@@ -16,10 +16,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-<<<<<<< Updated upstream
         dialect: org.hibernate.dialect.PostgreSQLDialect
-=======
->>>>>>> Stashed changes
     open-in-view: false
 
   # ===== FILE UPLOAD =====
