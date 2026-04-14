@@ -87,7 +87,11 @@ public class InstamojoPaymentService {
         requestBody.add("email", user.getEmail());
         requestBody.add("phone", order.getShippingPhone());
         requestBody.add("redirect_url", frontendUrl + "/payment/success");
-        requestBody.add("webhook", backendUrl + "/api/payments/instamojo/webhook");
+        if (isPublicCallbackUrl(backendUrl)) {
+            requestBody.add("webhook", backendUrl + "/api/payments/instamojo/webhook");
+        } else {
+            log.warn("Skipping Instamojo webhook because backend URL is not publicly reachable: {}", backendUrl);
+        }
         requestBody.add("send_email", "false");
         requestBody.add("send_sms", "false");
         requestBody.add("allow_repeated_payments", "false");
@@ -240,6 +244,17 @@ public class InstamojoPaymentService {
         if (apiKey == null || apiKey.isBlank() || authToken == null || authToken.isBlank()) {
             throw new BadRequestException("Instamojo credentials are not configured on the backend.");
         }
+    }
+
+    private boolean isPublicCallbackUrl(String url) {
+        if (url == null || url.isBlank()) {
+            return false;
+        }
+
+        String normalized = url.toLowerCase();
+        return normalized.startsWith("https://")
+                && !normalized.contains("localhost")
+                && !normalized.contains("127.0.0.1");
     }
 
     private void finalizeSuccessfulPayment(Order order) {

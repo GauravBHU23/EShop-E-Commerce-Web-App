@@ -57,6 +57,13 @@ app:
   backend:
     url: ${BACKEND_URL:http://localhost:8080}
 
+  payment:
+    instamojo:
+      base-url: ${INSTAMOJO_BASE_URL:https://www.instamojo.com/api/1.1}
+      api-key: ${INSTAMOJO_API_KEY:d877cc8f2a6c571addbee451ea9a30be}
+      auth-token: ${INSTAMOJO_AUTH_TOKEN:7dca8bd1b69af2b14b709ccbaddb4777}
+      salt: ${INSTAMOJO_SALT:8af1ba8267eb436891d6155cb99009d1}
+
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173}
 
